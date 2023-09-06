@@ -1,6 +1,7 @@
 //Lesson 1 Exercise 2 - Display Anagrams
  class Lesson1Ex2 {
     public static void main(String[] args) {
+        //Write out Anagrams to the console
         System.out.println("Here are 5 9-Letter anagrams:");
         System.out.println("ASSERT TIN = Resistant" );
         System.out.println("FATHER MAT = Aftermath");
