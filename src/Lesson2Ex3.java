@@ -17,11 +17,12 @@ public class Lesson2Ex3 {
         System.out.print("Enter price of " + name3 + ": ");
         float price3 = inputPrice.nextFloat();
 
+        float totalCost = price1 + price2 + price3;
+
+        System.out.print("NESMART");
+
+
     }
-
-
-
-
 }
 
 
