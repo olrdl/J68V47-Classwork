@@ -7,7 +7,7 @@ public class Lesson2Ex1 {
         System.out.print("What is your hobby? ");
         String hobby = input.nextLine();
 
-        System.out.print(name + " loves " + hobby + " in their free time. \n They find it relaxing and satisfying to see their " + hobby + " come to life. \n" +  hobby + " allows " + name + " to express their creative side.");
+        System.out.print(name + " loves " + hobby + " in their free time. \nThey find it relaxing and satisfying to see their " + hobby + " come to life. \n" +  hobby + " allows " + name + " to express their creative side.");
 
 
     }
