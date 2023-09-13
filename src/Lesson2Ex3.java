@@ -20,6 +20,11 @@ public class Lesson2Ex3 {
         float totalCost = price1 + price2 + price3;
 
         System.out.print("NESMART");
+        System.out.println(name1 + " ..... " + "£" + price1);
+        System.out.println(name2 + " ..... " + "£" + price2);
+        System.out.println(name3 + " ..... " + "£" + price3);
+        System.out.println("SUBTOTAL" + " ..... " + "£" + totalCost);
+
 
 
     }
