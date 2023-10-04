@@ -21,10 +21,10 @@ public class Lesson6Ex3 {
                 }
                 if (lives <= 0){
                     System.out.println("Out of lives.");
-                    break;
+                    break; //Breaks fixed loop when user runs out of lives
 
                 }
-                System.out.println("Well done!");
+                System.out.println("Well done!"); //Prints message if user successfully finishes quiz without running out of lives
             }
 
         System.out.println("Your score is " + score); //Prints final score
