@@ -1,11 +1,8 @@
 import java.util.*;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-
 public class Lesson12Ex2 {
-
     public static ArrayList<Student> loadFile(String filename){
         List<String> studentDetails;
         ArrayList<Student> thisClass = new ArrayList<>();
@@ -38,7 +35,6 @@ public class Lesson12Ex2 {
             return "O";
         }
     }
-
     public static void displayStudent(Student thisStudent){
         // note the slight change to this procedure
         System.out.format("%s (%d) %s %s %n",attendance(thisStudent.present),thisStudent.id, thisStudent.firstName, thisStudent.surname);
