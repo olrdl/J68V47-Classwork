@@ -1,18 +1,20 @@
 package Project;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.Scanner;
 import java.util.Random;
 public class WordForge {
     public static void mainMenu(int theme, int difficulty) {
+
+        //Stores if Difficulty or Theme has been selected
         boolean themeCheck = false;
         boolean difficultyCheck = false;
 
+        //Stores the selected Theme/Difficulty to pass to main game
         int selectedTheme = theme;
         int selectedDifficulty = difficulty;
 
+        //Loops until Start or Quit is selected.
         while (true) {
             Scanner input = new Scanner(System.in);
             System.out.println("--------------------");
@@ -24,50 +26,69 @@ public class WordForge {
             System.out.println("4. Start- Begin your Project.WordForge adventure!");
             System.out.println("5. Quit.");
             System.out.print("Please Enter the number corresponding to your choice: ");
+            //Gets input for Menu Option
             int userInput = input.nextInt();
 
-
+            //Gets input until user's input matches menu options
             while (userInput > 5 || userInput < 1) {
                 System.out.println("It seems like you have entered an invalid option. Please choose a valid option by entering the corresponding number.");
                 userInput = input.nextInt();
             }
 
+
+            //Calls themeOption if user selects corresponding option
             if (userInput == 1) {
                 selectedTheme = themeOption();
 
                 if (selectedTheme != 0) {
+                    //Changes check if user selects a theme
                     themeCheck = true;
                 }
-                System.out.println("theme: " + selectedTheme);
+                //Display user's selected theme
+                System.out.println("Theme: " + selectedTheme);
+
+
+                //Calls difficultyOption if user selects corresponding option
             } else if (userInput == 2) {
                 selectedDifficulty = difficultyOption();
                 if (selectedDifficulty != 0) {
+                    //Changes check if user selects a difficulty
                     difficultyCheck = true;
                 }
+                //Display user's selected difficulty
+                System.out.println("Difficulty: " + selectedDifficulty);
 
-                System.out.println("difficulty: " + selectedDifficulty);
+
+                //Calls leaderboard if user selects corresponding option
             } else if (userInput == 3) {
                 leaderboard();
+
+
+                //Calls startGame if user selects corresponding option
             } else if (userInput == 4) {
-
-                System.out.println("< theme: " + selectedTheme + " | difficulty: " + selectedDifficulty + " >");
-
-
+                //Display user's selected theme and difficulty before game starts
+                System.out.println("[Theme: " + selectedTheme + " | Difficulty: " + selectedDifficulty + "]");
+                //Checks if user has selected theme and difficulty
                 if (!themeCheck || !difficultyCheck) {
-                    System.out.println("Oops! It seems you forgot to select a theme or difficulty. Before diving into the Project.WordForge adventure, please make sure to choose both a theme and difficulty level.");
+                    System.out.println("Oops! It seems you forgot to select a theme or difficulty. Before diving into the WordForge adventure, please make sure to choose both a theme and difficulty level.");
                 } else {
-
+                    //Calls startGame
                     startGame(selectedTheme, selectedDifficulty);
                 }
-            } else if (userInput == 5) {
-                System.out.println("Game ended");
+
+                ////Quits program if user selects corresponding option
+            } else {
+                System.out.println("Exiting Game...");
                 System.exit(0);
             }
         }
     }
 
     public static void startGame(int selectedTheme, int selectedDifficulty) {
+        //Stores name of file to be opened
         String fileName = "";
+
+        //Declaring Variables
         int wordSize, EXACT, CLOSE, WRONG = 0;
 
         if (selectedDifficulty == 1) {
@@ -122,17 +143,17 @@ public class WordForge {
             }
         }
 
-        String[] wordArray = new String[20];
+        String[] wordArray = new String[25];
 
-        //ERROR HERE- CHOICE IS NULL
         try {
-            BufferedReader in = new BufferedReader(new FileReader("src/Project/"+fileName));
+            BufferedReader in = new BufferedReader(new FileReader("src/Project/" + fileName));
             String line = in.readLine();
-            int i = 25;
+            int i = 0;
 
             while(line != null && i < 25) {
-                wordArray[i] = line;
+                wordArray[i] = line.trim();
                 i++;
+                line = in.readLine();
             }
         }
         catch (IOException e) {
@@ -142,6 +163,8 @@ public class WordForge {
         Random rand = new Random();
         int n = rand.nextInt(25);
         String choice = wordArray[n];
+
+
         System.out.println(choice);
         int guesses = 6;
         boolean won = false;
@@ -150,10 +173,12 @@ public class WordForge {
         System.out.println("--------------------");
         System.out.println("WordForge");
         System.out.println("--------------------");
-        System.out.print("Enter your name: ");
-        String name = input.nextLine();
 
-        System.out.println("Enter a " + wordSize + "-letter word: ");
+        String name = "";
+        while (name.isEmpty()) {
+            System.out.print("Enter your name: ");
+            name = input.nextLine();
+        }
 
         int score = 0;
 
@@ -161,17 +186,17 @@ public class WordForge {
             String guess = get_guess(wordSize);
             int[] status = new int[wordSize];
 
-            for (int o = 0; o < wordSize; o++) {
-                status[o] = WRONG;
+            for (int k = 0; k < wordSize; k++) {
+                status[k] = WRONG;
             }
 
-            score = check_word(guess, wordSize, status, choice, EXACT, CLOSE);
+            score = check_word(guess, score, status, choice, EXACT, CLOSE);
             System.out.println("Guess " + (i+1) + ": ");
             print_word(guess, wordSize, status, EXACT, CLOSE, WRONG);
 
-            if (score == EXACT * wordSize) {
+            if (guess.equals(choice)) {
                 won = true;
-                score = score + i;
+                score = score + (6-i);
                 break;
             }
         }
@@ -180,15 +205,37 @@ public class WordForge {
             System.out.println("You won! The word was " + choice);
             System.out.println("Your final score is " + score + ".");
         }
+        else {
+            System.out.println("You did not win. The word was " + choice);
+            System.out.println("Your final score is " + score + ".");
+        }
+
+        class leaderboard {
+            public String name = "";
+            public int score = 0;
+        }
+
+        leaderboard leaderboard1 = new leaderboard();
+        leaderboard1.name = name;
+        leaderboard1.score = score;
+
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("src/Project/leaderboard.txt"));
+            String leaderboardText = "Name: " + leaderboard1.name + ", Score: " + leaderboard1.score;
+            writer.write(leaderboardText);
+        }
+        catch (IOException e) {
+            System.out.println("Error writing to leaderboard file.");
+        }
     }
 
     public static String get_guess(int wordSize) {
-        String guess = "";
+        String guess;
 
         Scanner input = new Scanner(System.in);
-        int lengthGuess = 0;
+        int lengthGuess;
         do {
-            System.out.println("Enter a " + wordSize + "-letter word: ");
+            System.out.print("Enter a " + wordSize + "-letter word: ");
             guess = input.nextLine();
             lengthGuess = guess.length();
         }
@@ -199,16 +246,14 @@ public class WordForge {
         return guess;
     }
 
-    public static int check_word(String guess, int wordSize, int[] status, String choice, int EXACT, int CLOSE) {
-        int score = 0;
-
-        for (int p = 0, lengthGuess = guess.length(); p < lengthGuess; p++) {
+    public static int check_word(String guess, int score, int[] status, String choice, int EXACT, int CLOSE) {
+        for (int p = 0; p < guess.length(); p++) {
             if (guess.charAt(p) == choice.charAt(p)) {
                 score = EXACT + score;
                 status[p] = EXACT;
             }
             else {
-                for (int j = 0; j < lengthGuess; j++) {
+                for (int j = 0; j < guess.length(); j++) {
                     if (guess.charAt(j) == choice.charAt(p)) {
                         score = CLOSE + score;
                         status[p] = CLOSE;
@@ -229,20 +274,20 @@ public class WordForge {
 
         for (int l = 0; l < wordSize; l++) {
             if (status[l] == EXACT) {
-                System.out.println(GREEN + guess.charAt(l) + RESET);
+                System.out.print(GREEN + guess.charAt(l) + RESET);
             }
             else if (status[l] == CLOSE) {
-                System.out.println(YELLOW + guess.charAt(l) + RESET);
+                System.out.print(YELLOW + guess.charAt(l) + RESET);
             }
             else if (status[l] == WRONG) {
-                System.out.println(RED + guess.charAt(l) + RESET);
+                System.out.print(RED + guess.charAt(l) + RESET);
             }
         }
-        return;
+        System.out.print("\n");
     }
 
     public static int themeOption() {
-        int theme = 0;
+        int theme;
         Scanner input = new Scanner(System.in);
         System.out.println("--------------------");
         System.out.println("Theme Settings");
@@ -264,7 +309,7 @@ public class WordForge {
             theme = 2;
         } else if (themeInput == 3) {
             theme = 3;
-        } else if (themeInput == 4) {
+        } else {
             System.out.println("Theme has not been selected.");
             return 0;
         }
@@ -272,7 +317,7 @@ public class WordForge {
     }
 
     public static int difficultyOption() {
-        int difficulty = 0;
+        int difficulty;
         Scanner input = new Scanner(System.in);
         System.out.println("--------------------");
         System.out.println("Difficulty Settings");
@@ -295,7 +340,7 @@ public class WordForge {
             difficulty = 2;
         } else if (difficultyInput == 3) {
             difficulty = 3;
-        } else if (difficultyInput == 4) {
+        } else {
             System.out.println("Difficulty has not been selected.");
             return 0;
 
