@@ -1,0 +1,5 @@
+Name, Score
+Max, 34
+Oliver, 369
+Julia, 394
+Aslan, 1000

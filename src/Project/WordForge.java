@@ -1,8 +1,11 @@
 package Project;
 
-import java.io.*;
-import java.util.Scanner;
-import java.util.Random;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.*;
+
 public class WordForge {
     public static void mainMenu(int theme, int difficulty) {
 
@@ -91,22 +94,26 @@ public class WordForge {
         //Declaring Variables
         int wordSize, EXACT, CLOSE, WRONG = 0;
 
+        //Assigning scoring system for Easy difficulty
         if (selectedDifficulty == 1) {
             wordSize = 5;
             EXACT = 2;
             CLOSE = 1;
         }
+        //Assigning scoring system for Medium difficulty
         else if (selectedDifficulty == 2) {
             wordSize = 6;
             EXACT = 3;
             CLOSE = 2;
         }
+        //Assigning scoring system for Hard difficulty
         else {
             wordSize = 7;
             EXACT = 4;
             CLOSE = 3;
         }
-
+        //Assigning filename based on users selected theme and difficulty
+        //General Theme
         if (selectedTheme == 1) {
             if (selectedDifficulty == 1) {
                 fileName = "General5.txt";
@@ -118,7 +125,7 @@ public class WordForge {
                 fileName = "General7.txt";
             }
         }
-
+        //Nature Theme
         if (selectedTheme == 2) {
             if (selectedDifficulty == 1) {
                 fileName = "Nature5.txt";
@@ -130,7 +137,7 @@ public class WordForge {
                 fileName = "Nature7.txt";
             }
         }
-
+        //Science Theme
         if (selectedTheme == 3) {
             if (selectedDifficulty == 1) {
                 fileName = "Science5.txt";
@@ -142,31 +149,37 @@ public class WordForge {
                 fileName = "Science7.txt";
             }
         }
-
+        //Declaring Array to store words from file
         String[] wordArray = new String[25];
 
         try {
+            //Reading word file
             BufferedReader in = new BufferedReader(new FileReader("src/Project/" + fileName));
             String line = in.readLine();
             int i = 0;
 
+            //Loops until end of file
             while(line != null && i < 25) {
+                //Removes "\n" after each row
                 wordArray[i] = line.trim();
                 i++;
                 line = in.readLine();
             }
         }
+        //Handling error if file cannot be read
         catch (IOException e) {
-            System.out.println("Error occurred reading from file.");
+            System.out.println("Error occurred reading from word file.");
         }
-
+        //Selecting random word from wordArray
         Random rand = new Random();
         int n = rand.nextInt(25);
         String choice = wordArray[n];
 
 
         System.out.println(choice);
+        //Storing number of guesses user has
         int guesses = 6;
+        //Storing if user has won
         boolean won = false;
 
         Scanner input = new Scanner(System.in);
@@ -174,6 +187,7 @@ public class WordForge {
         System.out.println("WordForge");
         System.out.println("--------------------");
 
+        //Loops until user enters a value for name.
         String name = "";
         while (name.isEmpty()) {
             System.out.print("Enter your name: ");
@@ -201,6 +215,7 @@ public class WordForge {
             }
         }
 
+
         if (won) {
             System.out.println("You won! The word was " + choice);
             System.out.println("Your final score is " + score + ".");
@@ -210,23 +225,16 @@ public class WordForge {
             System.out.println("Your final score is " + score + ".");
         }
 
-        class leaderboard {
-            public String name = "";
-            public int score = 0;
-        }
-
-        leaderboard leaderboard1 = new leaderboard();
-        leaderboard1.name = name;
-        leaderboard1.score = score;
-
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter("src/Project/leaderboard.txt"));
-            String leaderboardText = "Name: " + leaderboard1.name + ", Score: " + leaderboard1.score;
-            writer.write(leaderboardText);
+            FileWriter out = new FileWriter ("src/Project/leaderboard.txt", true);
+            String leaderboardText = name + " , " + score + "\n";
+            out.write(leaderboardText);
+            out.close();
         }
         catch (IOException e) {
             System.out.println("Error writing to leaderboard file.");
         }
+
     }
 
     public static String get_guess(int wordSize) {
