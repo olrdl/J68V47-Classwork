@@ -356,10 +356,45 @@ public class WordForge {
         return difficulty;
     }
 
+    public static void readLeaderboard() {
+        List<String> list = new ArrayList<String>();
+        try {
+            BufferedReader in = new BufferedReader(new FileReader("src/Project/leaderboard.txt"));
+            String line = in.readLine();
+
+            while (line != null) {
+                list.add(line);
+                line = in.readLine();
+            }
+
+            Collections.sort(list, new Comparator<String>() {
+                @Override
+                public int compare(String s1, String s2) {
+                    String[] split1 = s1.split(", ");
+                    String[] split2 = s2.split(", ");
+                    return Integer.parseInt(split2[1]) - Integer.parseInt(split1[1]);
+                }
+            });
+
+
+            for (String item : list) {
+                System.out.println(item);
+            }
+        }
+        catch (Exception e){
+            System.out.println("Error reading from leaderboard file.");
+        }
+
+
+    }
+
+
     public static void leaderboard() {
         System.out.println("--------------------");
         System.out.println("Leaderboard");
         System.out.println("--------------------");
+
+        readLeaderboard();
 
         Scanner input = new Scanner(System.in);
         System.out.println("2. Back- Return to the main menu.");
