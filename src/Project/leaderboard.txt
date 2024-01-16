@@ -1,4 +1,0 @@
-Max, 15
-Oliver, 24
-Julia, 27
-Josh, 13

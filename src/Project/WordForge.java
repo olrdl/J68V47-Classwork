@@ -117,11 +117,9 @@ public class WordForge {
         if (selectedTheme == 1) {
             if (selectedDifficulty == 1) {
                 fileName = "General5.txt";
-            }
-            else if (selectedDifficulty == 2) {
+            } else if (selectedDifficulty == 2) {
                 fileName = "General6.txt";
-            }
-            else {
+            } else {
                 fileName = "General7.txt";
             }
         }
@@ -129,11 +127,9 @@ public class WordForge {
         if (selectedTheme == 2) {
             if (selectedDifficulty == 1) {
                 fileName = "Nature5.txt";
-            }
-            else if (selectedDifficulty == 2) {
+            } else if (selectedDifficulty == 2) {
                 fileName = "Nature6.txt";
-            }
-            else {
+            } else {
                 fileName = "Nature7.txt";
             }
         }
@@ -141,11 +137,9 @@ public class WordForge {
         if (selectedTheme == 3) {
             if (selectedDifficulty == 1) {
                 fileName = "Science5.txt";
-            }
-            else if (selectedDifficulty == 2) {
+            } else if (selectedDifficulty == 2) {
                 fileName = "Science6.txt";
-            }
-            else {
+            } else {
                 fileName = "Science7.txt";
             }
         }
@@ -159,7 +153,7 @@ public class WordForge {
             int i = 0;
 
             //Loops until end of file
-            while(line != null && i < 25) {
+            while (line != null && i < 25) {
                 //Removes "\n" after each row
                 wordArray[i] = line.trim();
                 i++;
@@ -194,44 +188,54 @@ public class WordForge {
             name = input.nextLine();
         }
 
+        //Stores user's score
         int score = 0;
 
+        //Loop until all user's guesses used— until end of game
         for (int i = 0; i < guesses; i++) {
+            //Calls function to get user's guess
             String guess = get_guess(wordSize);
+            //Stores status of each character in word
             int[] status = new int[wordSize];
 
+            //Loop until status of for each character in word, stored initially as WRONG
             for (int k = 0; k < wordSize; k++) {
                 status[k] = WRONG;
             }
 
+            //Calls function to calculate user's score
             score = check_word(guess, score, status, choice, EXACT, CLOSE);
-            System.out.println("Guess " + (i+1) + ": ");
+            //Display number of user's current guess
+            System.out.println("Guess " + (i + 1) + ": ");
+            //Calls function to print guess with visual feedback
             print_word(guess, wordSize, status, EXACT, CLOSE, WRONG);
 
+            //Breaks game loop if user's guess matches word— ends game
             if (guess.equals(choice)) {
                 won = true;
-                score = score + (6-i);
+                score = score + (6 - i);
                 break;
             }
         }
 
-
+        //Display win message if user has won
         if (won) {
             System.out.println("You won! The word was " + choice);
             System.out.println("Your final score is " + score + ".");
         }
+        //Display loss message if user has not won
         else {
             System.out.println("You did not win. The word was " + choice);
             System.out.println("Your final score is " + score + ".");
         }
 
+        //Writes user's name, score to leaderboard file
         try {
-            FileWriter out = new FileWriter ("src/Project/leaderboard.txt", true);
+            FileWriter out = new FileWriter("src/Project/leaderboard.txt", true);
             String leaderboardText = name + " , " + score + "\n";
             out.write(leaderboardText);
             out.close();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             System.out.println("Error writing to leaderboard file.");
         }
 
@@ -242,30 +246,33 @@ public class WordForge {
 
         Scanner input = new Scanner(System.in);
         int lengthGuess;
+
+        //Loop until user's guess is appropriate length
         do {
             System.out.print("Enter a " + wordSize + "-letter word: ");
             guess = input.nextLine();
             lengthGuess = guess.length();
-        }
-        while (lengthGuess != wordSize);
+        } while (lengthGuess != wordSize);
 
-        guess = guess.toLowerCase();
+        guess = guess.toLowerCase(); //Stores user's guess in lowercase
 
         return guess;
     }
 
     public static int check_word(String guess, int score, int[] status, String choice, int EXACT, int CLOSE) {
-        for (int p = 0; p < guess.length(); p++) {
-            if (guess.charAt(p) == choice.charAt(p)) {
-                score = EXACT + score;
-                status[p] = EXACT;
-            }
-            else {
-                for (int j = 0; j < guess.length(); j++) {
-                    if (guess.charAt(j) == choice.charAt(p)) {
-                        score = CLOSE + score;
-                        status[p] = CLOSE;
-                        break;
+        boolean[] matched_letter = new boolean[choice.length()]; //Stores characters that are guessed correctly to prevent error with duplicate matches
+
+        for (int p = 0; p < guess.length(); p++) { //Loop for each character in guess
+            if (guess.charAt(p) == choice.charAt(p)) { //If current character in user's guess is equal to current character in word
+                score = EXACT + score; //Assign points for EXACT
+                status[p] = EXACT; //Change status of correct letter to EXACT
+            } else {
+                for (int j = 0; j < guess.length(); j++) { //Loop for each character in guess
+                    if (!matched_letter[j] && guess.charAt(j) == choice.charAt(p)) { //If letter has not been guessed correctly and current character in user's guess is equal to current character in word
+                        score = CLOSE + score; //Assign points for CLOSE
+                        status[j] = CLOSE; //Change status of close letter to CLOSE
+                        matched_letter[j] = true; //Change matched_letter to true to avoid duplicate matches
+                        break; //Break from Inner loop
                     }
                 }
             }
@@ -275,23 +282,23 @@ public class WordForge {
 
     public static void print_word(String guess, int wordSize, int[] status, int EXACT, int CLOSE, int WRONG) {
 
+        //Storing ANSI codes for visual feedback
         String GREEN = "\u001B[32m";
         String YELLOW = "\u001B[33m";
         String RED = "\u001B[31m";
         String RESET = "\u001B[0m";
 
+        //Loop for each character in guess
         for (int l = 0; l < wordSize; l++) {
             if (status[l] == EXACT) {
-                System.out.print(GREEN + guess.charAt(l) + RESET);
-            }
-            else if (status[l] == CLOSE) {
-                System.out.print(YELLOW + guess.charAt(l) + RESET);
-            }
-            else if (status[l] == WRONG) {
-                System.out.print(RED + guess.charAt(l) + RESET);
+                System.out.print(GREEN + guess.charAt(l) + RESET); //Displays character in green if guessed correctly
+            } else if (status[l] == CLOSE) {
+                System.out.print(YELLOW + guess.charAt(l) + RESET); //Displays character in yellow if almost guessed correctly
+            } else if (status[l] == WRONG) {
+                System.out.print(RED + guess.charAt(l) + RESET); //Displays character in red if guessed incorrectly
             }
         }
-        System.out.print("\n");
+        System.out.print("\n"); //New line
     }
 
     public static int themeOption() {
@@ -305,18 +312,22 @@ public class WordForge {
         System.out.println("3. Science- Embark on a scientific journey through word puzzles.");
         System.out.println("4. Back- Return to the main menu.");
         System.out.print("Please Enter the number corresponding to your choice: ");
+        //Gets user's input for theme option
         int themeInput = input.nextInt();
 
+        //Gets input until user's input matches theme options
         while (themeInput > 4 || themeInput < 1) {
             System.out.println("It seems like you have entered an invalid option. Please choose a valid option by entering the corresponding number.");
             themeInput = input.nextInt();
         }
+        //Assigning theme as corresponding option
         if (themeInput == 1) {
             theme = 1;
         } else if (themeInput == 2) {
             theme = 2;
         } else if (themeInput == 3) {
             theme = 3;
+            //Display message to user if theme is not selected
         } else {
             System.out.println("Theme has not been selected.");
             return 0;
@@ -335,79 +346,80 @@ public class WordForge {
         System.out.println("3. Hard- Words of length 7 for a more intense and difficult gameplay.");
         System.out.println("4. Back- Return to the main menu.");
         System.out.print("Please Enter the number corresponding to your choice: ");
+        //Gets user's input for difficulty option
         int difficultyInput = input.nextInt();
 
+        //Gets input until user's input matches difficulty options
         while (difficultyInput > 4 || difficultyInput < 1) {
             System.out.println("It seems like you have entered an invalid option. Please choose a valid option by entering the corresponding number.");
             difficultyInput = input.nextInt();
         }
-
+        //Assigning difficulty as corresponding option
         if (difficultyInput == 1) {
             difficulty = 1;
         } else if (difficultyInput == 2) {
             difficulty = 2;
         } else if (difficultyInput == 3) {
             difficulty = 3;
+            //Display message to user if difficulty is not selected
         } else {
             System.out.println("Difficulty has not been selected.");
             return 0;
-
         }
         return difficulty;
     }
 
     public static void readLeaderboard() {
-        List<String> list = new ArrayList<String>();
+        //Stores the leaderboard lines
+        List<String> list = new ArrayList<>();
         try {
             BufferedReader in = new BufferedReader(new FileReader("src/Project/leaderboard.txt"));
             String line = in.readLine();
 
+            //Read each line of file until end and append to ArrayList
             while (line != null) {
                 list.add(line);
                 line = in.readLine();
             }
 
-            Collections.sort(list, new Comparator<String>() {
-                @Override
-                public int compare(String s1, String s2) {
-                    String[] split1 = s1.split(", ");
-                    String[] split2 = s2.split(", ");
-                    return Integer.parseInt(split2[1]) - Integer.parseInt(split1[1]);
-                }
+            //Method to sort ArrayList from highest to lowest score
+            list.sort((s1, s2) -> {
+                String[] score1 = s1.split(", ");
+                String[] score2 = s2.split(", ");
+                return Integer.parseInt(score2[1]) - Integer.parseInt(score1[1]); //Compares score1 and score2 and sorts from highest to lowest
             });
 
-
+            //Displays each line of sorted leaderboard to user
             for (String item : list) {
                 System.out.println(item);
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Error reading from leaderboard file.");
         }
-
-
     }
-
 
     public static void leaderboard() {
         System.out.println("--------------------");
         System.out.println("Leaderboard");
         System.out.println("--------------------");
 
+        //Calls function to Display sorted leaderboard
         readLeaderboard();
 
         Scanner input = new Scanner(System.in);
         System.out.println("2. Back- Return to the main menu.");
         System.out.print("Please Enter the number corresponding to your choice: ");
+        //Gets user's input for leaderboard option
         int leaderboardInput = input.nextInt();
 
+        //Gets input until user's input matches leaderboard option
         while (leaderboardInput != 2) {
             System.out.println("It seems like you have entered an invalid option. Please choose a valid option by entering the corresponding number.");
             leaderboardInput = input.nextInt();
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) { //Main function with no theme and difficulty initially selected.
         mainMenu(0, 0);
     }
 }
