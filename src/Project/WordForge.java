@@ -26,7 +26,7 @@ public class WordForge {
             System.out.println("1. Theme- Select a theme for your word puzzle adventure.");
             System.out.println("2. Difficulty- Choose the difficulty level for a challenging experience.");
             System.out.println("3. Leaderboard- View the top players and their scores.");
-            System.out.println("4. Start- Begin your Project.WordForge adventure!");
+            System.out.println("4. Start- Begin your WordForge adventure!");
             System.out.println("5. Quit.");
             System.out.print("Please Enter the number corresponding to your choice: ");
             //Gets input for Menu Option
@@ -163,14 +163,20 @@ public class WordForge {
         //Handling error if file cannot be read
         catch (IOException e) {
             System.out.println("Error occurred reading from word file.");
+            System.exit(0);
+
         }
         //Selecting random word from wordArray
         Random rand = new Random();
         int n = rand.nextInt(25);
         String choice = wordArray[n];
 
+        //Exiting game if file is empty
+        if (choice == null) {
+            System.out.println("Error occurred reading from word file.");
+            System.exit(0);
+        }
 
-        System.out.println(choice);
         //Storing number of guesses user has
         int guesses = 6;
         //Storing if user has won
