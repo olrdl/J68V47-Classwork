@@ -1,4 +1,3 @@
-import java.util.*;
 public class Lesson8Ex2 {
     public static void main(String[] args) {
         int[] scores = {90, 85, 78, 92, 88, 76, 95, 89, 82, 91};
@@ -10,10 +9,5 @@ public class Lesson8Ex2 {
         }
         float average = total / 10;
         System.out.println("The average score is: " + average);
-
-
-
-
-
     }
 }

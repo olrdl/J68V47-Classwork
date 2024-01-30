@@ -1,4 +1,5 @@
-public class Lesson8Ex3 {
+import java.util.*;
+public class Extra8Ex3 {
     public static void main(String[] args) {
         // Set up the directions array
         String[] directions = {"Start by exiting the building you are currently in and turning left onto the main road.",
@@ -17,9 +18,12 @@ public class Lesson8Ex3 {
             step ++;
         }
 
-        String newDirection = "After turning onto Elm Street, walk past the grocery store on your right.";
+        Scanner input = new Scanner(System.in);
+        System.out.println("Enter new direction to add to array: ");
+        String newDirection = input.nextLine();
 
-        int position = 4;
+        System.out.println("Enter position to insert into array:  ");
+        int position = input.nextInt();
 
         String[] newDirections = new String[directions.length + 1];
         System.arraycopy(directions, 0, newDirections, 0, directions.length);
@@ -33,17 +37,5 @@ public class Lesson8Ex3 {
             System.out.format("%d. %s %n",step,direction);
             step ++;
         }
-
-        String[] newDirectionsWithoutLast = new String[newDirections.length - 1];
-        System.arraycopy(newDirections, 0, newDirectionsWithoutLast, 0, newDirections.length - 1);
-
-        System.out.println(" ");
-
-        step = 1;
-        for(String direction : newDirectionsWithoutLast) {
-            System.out.format("%d. %s %n",step,direction);
-            step ++;
-        }
-
     }
 }
