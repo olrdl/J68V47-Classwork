@@ -1,0 +1,56 @@
+Toyota (1997)
+Vin: 1ZVBP8AM0E5628698
+Colour: white
+Mileage: 44820
+Condition: fair
+Price: 8022
+---------------------------------------------
+Kia (2009)
+Vin: 5TFBM5F12AX431376
+Colour: white
+Mileage: 45692
+Condition: poor
+Price: 96936
+---------------------------------------------
+Ferrari (2009)
+Vin: 3GYVKNEFXAG625569
+Colour: white
+Mileage: 45336
+Condition: good
+Price: 55125
+---------------------------------------------
+Dodge (2000)
+Vin: 1C4AJWAG2FL008981
+Colour: white
+Mileage: 44744
+Condition: fair
+Price: 19178
+---------------------------------------------
+Saab (1993)
+Vin: KNAFU6A28C5644447
+Colour: red
+Mileage: 29910
+Condition: good
+Price: 12004
+---------------------------------------------
+Dodge (1993)
+Vin: WAUAF78E55A984871
+Colour: silver
+Mileage: 18989
+Condition: excellent
+Price: 44261
+---------------------------------------------
+Buick (2007)
+Vin: WUADUAFG3EN707820
+Colour: red
+Mileage: 44207
+Condition: good
+Price: 44056
+---------------------------------------------
+Toyota (1997)
+Vin: 1ZVBP8AM0E5628698
+Colour: white
+Mileage: 44820
+Condition: fair
+Price: 8022
+---------------------------------------------

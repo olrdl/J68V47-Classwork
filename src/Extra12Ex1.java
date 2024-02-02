@@ -1,8 +1,11 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
-public class Lesson12Ex4 {
+import java.util.Scanner;
+
+public class Extra12Ex1 {
     public static void main(String[] args) {
+        Boolean foundCar = false;
         ArrayList<Car> carArrayList = new ArrayList<>();
 
         try {
@@ -21,23 +24,37 @@ public class Lesson12Ex4 {
                 String condition = carDetails[7];
 
                 Car car = new Car(make, model, year, vin, price, colour, mileage, condition);
-                    carArrayList.add(car);
+                carArrayList.add(car);
 
                 line = in.readLine();
             }
         }
-        catch (Exception e){
+        catch (Exception e) {
             System.out.println("Error reading from carSales file.");
         }
 
-        for(Car car : carArrayList) {
-            System.out.println(car.make + " (" + car.year + ")");
-            System.out.println("Vin: " + car.vin);
-            System.out.println("Colour: " + car.colour);
-            System.out.println("Mileage: " + car.mileage);
-            System.out.println("Condition: " + car.condition);
-            System.out.println("Price: " + car.price);
-            System.out.println("---------------------------------------------");
+        Scanner input = new Scanner(System.in);
+
+        System.out.println("Enter Maximum Price: ");
+        int maxPrice = input.nextInt();
+
+        for (Car car : carArrayList) {
+            if (car.price <= maxPrice) {
+                System.out.println(car.make + " (" + car.year + ")");
+                System.out.println("Vin: " + car.vin);
+                System.out.println("Colour: " + car.colour);
+                System.out.println("Mileage: " + car.mileage);
+                System.out.println("Condition: " + car.condition);
+                System.out.println("Price: " + car.price);
+                System.out.println("---------------------------------------------");
+
+                foundCar = true;
+            }
+        }
+        if (!foundCar) {
+            System.out.println("No results found.");
         }
     }
 }
+
+
